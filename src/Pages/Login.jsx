@@ -27,7 +27,7 @@ export default function Login() {
       <div className='w-full md:w-[1540px] mx-auto mt-[80px] md:mt-[122px] px-4 md:px-0 justify-between'>
                 <div className='flex flex-col w-[500px] mx-auto'>
                     <h1 className='w-full text-[54px] text-[#565656] font-bold text-center'>Hello <span className='text-teal-500 font-nunito tracking-[0.02em] leading-[70.75px]'>Again</span></h1>
-                    <p className='text-[23.19px] font-normal font-nunito leading-[32.44px] tracking-[0.02em] text-[#7e7f88] text-center'>Welcome back you've been missed!</p>
+                    <p className=' text-lg font-normal font-nunito leading-[32.44px] tracking-[0.02em] text-[#7e7f88] text-center'>Welcome back!</p>
                     <input value={data.phone} onChange={(e) => setData({ ...data, phone: e.target.value })} className='w-full border h-[72px] bg-white rounded-[20px] px-[20px] font-nunito text-[20px] leading-[0.02em] placeholder:text-[#9092B0] font-normal mt-[50px]' placeholder='Enter phone number' type='text' />
                     <input value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })} className='w-full border h-[72px] bg-white rounded-[20px] px-[20px] font-nunito text-[20px] leading-[0.02em] placeholder:text-[#9092B0] font-normal mt-[20px] mb-[20px]' placeholder='Password' type='password' />
                     <Link className='text-[#757575] self-end text-[20px] font-normal font-nunito hover:text-[#4B4AEF]' to='/forgot-password'>Recover password</Link>
@@ -37,6 +37,10 @@ export default function Login() {
                             <h1 className='text-white text-[20px]'>{data.errorMessage?.charAt(0)?.toUpperCase() + data?.errorMessage?.slice(1) }</h1>
                         </div>
                     }
+
+<p class="text-md font-light text-gray-500 ">
+                      Don’t have an account yet? <Link to="signup" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
+                  </p>
                     
                 </div>
             </div>
