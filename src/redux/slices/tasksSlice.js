@@ -4,6 +4,7 @@ const initialState = {
     tasts: [],
     nextLink: '',
     prevLink: '',
+    task: {},
 }
 
 const tasksSlice = createSlice({
@@ -15,8 +16,11 @@ const tasksSlice = createSlice({
             state.nextLink = payload.next;
             state.prevLink = payload.previous;
         },
+        getOneTaskReducer: (state, { payload }) => {
+            state.task = payload.results;
+        }
     }
 });
 
-export const { getTasksReducer } = tasksSlice.actions;
+export const { getTasksReducer, getOneTaskReducer } = tasksSlice.actions;
 export default tasksSlice.reducer;

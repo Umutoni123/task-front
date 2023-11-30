@@ -13,11 +13,11 @@ import { GoTasklist } from "react-icons/go";
 import NewTasks from '../Components/NewTasks';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTasks } from '../redux/actions/tasksAction';
+import { deleteTaskAction, getTasks } from '../redux/actions/tasksAction';
 export default function Tasks() {
   const itemsPerPage = 16;
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [item, setItem] = useState({});
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentUsers = TasksData.slice(indexOfFirstItem, indexOfLastItem);
@@ -55,7 +55,8 @@ export default function Tasks() {
   const isPrevInactiveDisabled = currentPage === 1;
   const isNextInactiveDisabled =
   currentPage === Math.ceil(TasksData.length / itemsPerPage);
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (item) => {
+    setItem(item);
     setDeleteModalOpen(true);
   };
   const handleCloseModal = () => {
@@ -65,6 +66,7 @@ export default function Tasks() {
 
   const handleConfirmDelete = () => {
     console.log('Deleting...');
+    dispatch(deleteTaskAction(item?._id))
     handleCloseModal();
   };
 
@@ -108,7 +110,7 @@ export default function Tasks() {
                 </div>
             </div>
             <div className='border rounded border-blue-500 p-4'>
-                <NewTasks />
+                <NewTasks projectDescription={item.projectName} projectName={item.projectDescription} />
             </div>
         </TasksModal>
         <DeleteModal
@@ -158,14 +160,17 @@ export default function Tasks() {
                   className='py-1 pl-1'
                 >
                   <div className='flex gap-2 justify-center'>
-                    <div>
+                    <Link to={`/newtasks/${item._id}`}>
                       <FaEdit className='mt-[3px] text-green-500 cursor-pointer' />
-                    </div>
-                    <div className='' onClick={handleDeleteClick}>
+                    </Link>
+                    <div className='' onClick={() => handleDeleteClick(item)}>
                       <AiFillDelete className='mt-[3px] text-red-500 cursor-pointer' />
                     </div>
                     <div>
-                      <AiFillEye className='mt-[3px] text-blue-500 cursor-pointer' onClick={openModal} />
+                      <AiFillEye className='mt-[3px] text-blue-500 cursor-pointer' onClick={() => {
+                        openModal();
+                        setItem(item);
+                      }} />
                     </div>
                   </div>
                 </td>

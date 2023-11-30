@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LuSave } from "react-icons/lu";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoMdAttach } from "react-icons/io";
 import { IoIosClose } from "react-icons/io";
 import { FiPlus } from "react-icons/fi";
 import { useDispatch, useSelector } from 'react-redux';
-import { addTaskAction } from '../redux/actions/tasksAction';
-import { useNavigate } from 'react-router-dom';
+import { addTaskAction, getOneTask, updateTaskAction } from '../redux/actions/tasksAction';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function CreateNewTasks() {
     const dispatch = useDispatch();
@@ -20,7 +20,16 @@ export default function CreateNewTasks() {
         projectName: '',
         projectDescription: '',
         priority: '',
-    })
+    });
+    const { id } = useParams();
+
+    useEffect(() => {
+      if(typeof id !== 'undefined'){
+        dispatch(getOneTask(id)).then((res) => {
+            setData({...data, name: res.results.name, endDate: res.results.endDate, startDate: res.results.startDate, assignee: res.results.assignee, projectName: res.results.projectName, projectDescription: res.results.projectDescription, priority: res.results.priority })
+        })
+      }
+    }, []);
 
     const handleAddTask = () => {
         const payload = {
@@ -32,7 +41,18 @@ export default function CreateNewTasks() {
             projectDescription: data.projectDescription,
             priority: data.priority,
         }
-        dispatch(addTaskAction(payload, navigate));
+
+        const payloadUpdate = {
+            name: data.name,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            assignee: data.assignee,
+            projectName: data.projectName,
+            projectDescription: data.projectDescription,
+            priority: data.priority,
+            id
+        }
+        dispatch(typeof id !== 'undefined' ? updateTaskAction(payloadUpdate, navigate) : addTaskAction(payload, navigate));
     }
 
   return (
@@ -106,13 +126,15 @@ export default function CreateNewTasks() {
                 <label htmlFor="names">Description</label>
 
                 <textarea 
-                 value={data.projectDescription}
-                 onChange={(e) => setData({ ...data, projectDescription: e.target.value})}
-                name="description" 
-                id="description" 
-                placeholder='Add more details to this task'
-                cols="20" rows="5" className='border-2 rounded-xl py-2 px-4 focus:border-gray-500 w-full'>
+                    value={data.projectDescription}
+                    onChange={(e) => setData({ ...data, projectDescription: e.target.value})}
+                    name="description" 
+                    maxLength={500}
+                    id="description" 
+                    placeholder='Add more details to this task'
+                    cols="20" rows="5" className='border-2 rounded-xl py-2 px-4 focus:border-gray-500 w-full'>
                 </textarea>
+                <span className='text-xs flex justify-end'>{data.projectDescription.length + '/ 500 Words'}</span>
             </div>
 
             <div className='mb-3'>
@@ -121,19 +143,19 @@ export default function CreateNewTasks() {
                 <div className='flex gap-14 pt-4'>
                     <div className='flex gap-2'>
                         <div>
-                            <input type="radio" onClick={() => setData({...data, priority: 'low'})} name="priority" id="" />
+                            <input type="radio" checked={typeof id !== 'undefined' && data.priority === 'low' ? true : false} onClick={() => setData({...data, priority: 'low'})} name="priority" id="" />
                         </div>
                         <div>Low</div>
                     </div>
                     <div className='flex gap-2'>
                         <div>
-                            <input onClick={() => setData({...data, priority: 'normal'})} type="radio" name="priority" id="" />
+                            <input checked={typeof id !== 'undefined' && data.priority === 'normal' ? true : false} onClick={() => setData({...data, priority: 'normal'})} type="radio" name="priority" id="" />
                         </div>
                         <div>Normal</div>
                     </div>
                     <div className='flex gap-2'>
                         <div>
-                            <input onClick={() => setData({...data, priority: 'high'})} type="radio" name="priority" id="" />
+                            <input checked={typeof id !== 'undefined' && data.priority === 'high' ? true : false} onClick={() => setData({...data, priority: 'high'})} type="radio" name="priority" id="" />
                         </div>
                         <div>High</div>
                     </div>

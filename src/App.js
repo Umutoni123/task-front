@@ -20,6 +20,7 @@ function App() {
         <Route element={<PageLayout />}>
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/newtasks" element={<CreateNewTasks />} />
+          <Route path="/newtasks/:id" element={<CreateNewTasks />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
         :

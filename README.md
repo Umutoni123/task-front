@@ -4,7 +4,19 @@ This is a project for managing users and creating and assigning the tasks to the
 
 ## What you need to do when you click on the website
  You will first You are going to use the system for the first time
- <img  width="100" height="100" src="./src/Images/Login.jpg" >
+ After signup You will be directed to Login
+ Enter the credentials
+ after entering the Credentials you will be directed to the main page which contains the tasks and profile
+
+ ## Pages
+  -Login
+  -Signup
+  -Forget Password
+  -user Page
+ ## Authentication 
+   -Login
+   -Signup
+
 
 ## Technologies used
  Frontend: React
